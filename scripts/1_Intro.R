@@ -1,6 +1,4 @@
-
-### Aula 1 ### 
-### Introdução ###
+### Introdução: dicas gerais sobre tabelas -------
 
 ## Diretorio
 # ao abrir o Rproj. os scripts podem ser abertos através da guia "Files"
@@ -19,6 +17,8 @@ data <- read.csv("nome_da_tabela.csv", h=T)
 data <- read.csv2(here::here("pasta_de_dados", "nome_da_tabela.csv"))
 #nunca use file_choose() 
 
+# preciso manter a tabela original, entao vou criar uma nova tabela
+data_novo <- data
 
 ## Como visualizar a tabela carregada
 
@@ -51,8 +51,6 @@ data <- data[,-c(1:3)]
 
 data <- data[,-c(1,5)]
 
-# preciso manter a tabela original, entao vou criar uma nova tabela
-data_novo <- data
 
 ## Como excluir uma linha da tabela
 data <- data[-1,]
@@ -67,6 +65,9 @@ data <- data[,c("coluna1","coluna2","coluna3")]
 
 data<-data[,c(1,5,8)]
 
+#voltando para os dados originais
+data<-data_novo
+
 ## Minha tabela é gigantesca, mas tem linhas com NA e quero tirar essas linhas
 row.has.na <- apply(data, 1, function(x){any(is.na(x))}) #tirar NA
 sum(row.has.na)
@@ -76,8 +77,6 @@ data <- data[!row.has.na,]
 
 data<-data[!(data$Nome_coluna=="Nome_linha"),]
 
-## Minha matriz tem espécies nas linhas e sites nas colunas, mas quero que seja ao contrário:
-data <- cast(data, Site~species, fun.aggregate = mean)
 
 ## Tenho duas tabelas e quero juntá-las
 
@@ -107,8 +106,36 @@ max(data$site_a)
 ## Valor mínimo da coluna
 min(data$site_a)
 
+## Minha matriz tem espécies nas linhas e sites nas colunas, mas quero que seja ao contrário:
+data <- read.csv2(here::here("pasta_de_dados", "nome_da_tabela.csv"))
+data2 <- dcast(data, PlotCode~Species, value.var="D1", fun.aggregate = mean)
 
-# matriz de comunidades ---------------
+### Outras funcoes uteis ----------
+
+#valores estao em fator ou caracter, mas preciso que sejam numericos
+as.numeric
+#exemplo:
+class(data$Height)
+data$Height <- as.numeric(data$Height)
+class(data$Height)
+
+#valores estao em caracter ou numericos, mas preciso que sejam fatores
+as.factor
+#exemplo
+class(data$PlotCode)
+data$PlotCode <- as.factor(data$PlotCode)
+class(data$PlotCode)
+
+#checando nomes de especies (Flora do Brasil)
+library(flora)
+#funcao: get.taxa
+especies <- get.taxa(data$Species); especies
+
+#checar os nomes que nao sao aceitos (incorretos)
+erro <- filter(especies, taxon.status != "accepted")
+erro # nesse exemplo todos os nomes estao corretos (aceitos) 
+
+### matriz de comunidades ---------------
 #criacao da matriz de comunidades
 #nessa matriz, temos os sitios (comunidades) nas linhas
 #especies nas colunas
@@ -122,24 +149,21 @@ comunidade<-reshape2::dcast(data,  PlotCode~Species, value.var="D1",fun.agg = le
 head(comunidade)
 
 #removendo a primeira linha e segunda coluna
-comunidade<-comunidade[-1,-2]
-head(comunidade)
+# comunidade<-comunidade[-1,-2]
+# head(comunidade)
 
 #sitio precisa estar como nome de linha, e nao como variavel
 comunidade2<-comunidade %>% remove_rownames %>% column_to_rownames(var="PlotCode")
 head(comunidade2) #coloca 1 coluna como rowname
 
 ## Fazer a matriz binária
-
 comunidade2[comunidade2>0] <-1 ; comunidade2
 
 
 ## O que for 0 colocar NA
-
 comunidade2[comunidade2==0] <-NA ; comunidade2
 
 ## Transpor a matriz
-
 t2<- t(comunidade2)
 t2
 
