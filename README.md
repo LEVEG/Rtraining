@@ -12,3 +12,9 @@ A partir dessa iniciativa, pretendemos que nossa vida seja "facilitada" para o u
 Aproveitem ao máximo!
 
 Abraços
+
+https://www.ufrgs.br/leveg/ 
+
+https://www.instagram.com/leveg.ufrgs/ 
+
+https://twitter.com/leveg_ufrgs
