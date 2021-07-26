@@ -41,11 +41,6 @@ comunidade2 <- round(comunidade2)
 raremax <- min(rowSums(comunidade2))
 comunidade2_rare <- rarefy(comunidade2, raremax); comunidade2_rare
 
-## Beta diversidade ## VER AINDA:
-comm_beta <- betadiver(comunidade2); comm_beta
-plot(comm_beta)
-scores(comm_beta)
-
 # Hill numbers:  Chao et al 2014
 #inverso de simpson, equivalente ao q=2 de Chao et al 2014
 comunidade_div2<- diversity(comunidade2, "invsimpson");comunidade_div2
@@ -53,15 +48,22 @@ comunidade_div2<- diversity(comunidade2, "invsimpson");comunidade_div2
 library(hillR)
 dummy <- FD::dummy
 
+#q=0 corresponde a riqueza de especies
 # same as: vegan::specnumber(dummy$abun)
 hill_taxa(comm = dummy$abun, q = 0)
 
+#q=1 corresponde ao expoente da diversidade de shannon
 # same as: exp(vegan::diversity(x = dummy$abun, index = 'shannon'))
 hill_taxa(comm = dummy$abun, q = 1)
 
+#q=2 corresponde ao inverso de simpson
 # same as: vegan::diversity(x = dummy$abun, index = 'invsimpson')
 hill_taxa(comm = dummy$abun, q = 2)
 
+## Beta diversidade ## VER AINDA:
+comm_beta <- betadiver(comunidade2); comm_beta
+plot(comm_beta)
+scores(comm_beta)
 
 ####### baselga
 
