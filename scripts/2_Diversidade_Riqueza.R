@@ -1,4 +1,4 @@
-## Diversidade de espécies e Riqueza ##
+## Diversidade de especies e Riqueza ##
 
 ## Como carregar pacotes
 library(reshape);library(reshape2)
@@ -40,10 +40,9 @@ comunidade_div2<- diversity(comunidade2, "simpson");comunidade_div2
 comunidade2 <- round(comunidade2)
 raremax <- min(rowSums(comunidade2))
 comunidade2_rare <- rarefy(comunidade2, raremax); comunidade2_rare
+rarecurve(comunidade2)
 
 # Hill numbers:  Chao et al 2014
-#inverso de simpson, equivalente ao q=2 de Chao et al 2014
-comunidade_div2<- diversity(comunidade2, "invsimpson");comunidade_div2
 
 library(hillR)
 dummy <- FD::dummy
@@ -59,27 +58,6 @@ hill_taxa(comm = dummy$abun, q = 1)
 #q=2 corresponde ao inverso de simpson
 # same as: vegan::diversity(x = dummy$abun, index = 'invsimpson')
 hill_taxa(comm = dummy$abun, q = 2)
+#inverso de simpson, equivalente ao q=2 de Chao et al 2014
+comunidade_div2<- diversity(comunidade2, "invsimpson");comunidade_div2
 
-## Beta diversidade ## VER AINDA:
-comm_beta <- betadiver(comunidade2); comm_beta
-plot(comm_beta)
-scores(comm_beta)
-
-####### baselga
-
-library(betapart)
-
-comm <-decostand (comunidade2, method="pa")
-#comm[comm>0] <-1 
-
-## calculando o multiple site dissimilarity
-beta_nat_2<-beta.multi(comm, index.family="sorensen")
-beta_nat_2 #isso para saber a beta total, e o que ? tuenover e nestedness
-
-###extrair matriz de dist usando simpson #isso se turnover for maior
-beta_nat<- beta.pair(comm, index.family="sorensen") # par a par, matriz de distancia 
-class(beta_nat)
-beta_sim<-beta_nat[["beta.sim"]] ###objeto apenas com a matriz de simpson
-beta_sim # turnover
-class(beta_sim)
-length(beta_sim)
