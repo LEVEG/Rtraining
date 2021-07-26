@@ -53,3 +53,31 @@ ordpca_co<-autoplot(pca_co,
         legend.title = element_text(size=rel(1.1))) +
   labs(color="Strata")
 ordpca_co
+
+
+## Beta diversidade 
+#matriz de comunidade
+#matriz de distancia
+
+comm_beta <- betadisper(comunidade2); comm_beta #colocar na ordenacao
+plot(comm_beta)
+scores(comm_beta)
+
+####### baselga
+
+library(betapart)
+
+comm <-decostand (comunidade2, method="pa")
+#comm[comm>0] <-1 
+
+## calculando o multiple site dissimilarity
+beta_nat_2<-beta.multi(comm, index.family="sorensen")
+beta_nat_2 #isso para saber a beta total, e o que ? tuenover e nestedness
+
+###extrair matriz de dist usando simpson #isso se turnover for maior
+beta_nat<- beta.pair(comm, index.family="sorensen") # par a par, matriz de distancia 
+class(beta_nat)
+beta_sim<-beta_nat[["beta.sim"]] ###objeto apenas com a matriz de simpson
+beta_sim # turnover
+class(beta_sim)
+length(beta_sim)
