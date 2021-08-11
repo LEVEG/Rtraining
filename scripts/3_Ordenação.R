@@ -50,6 +50,22 @@ ordpca_co<-autoplot(pca_co,
   labs(color="Strata")
 ordpca_co
 
+#### NMDS ###
+
+library(ecodist)
+data(iris)
+iris.d <- dist(iris[,1:4])
+
+### nmds() is timeconsuming, so this was generated
+### in advance and saved.
+### set.seed(1234)
+iris.nmds <- nmds(iris.d, nits=20, mindim=1, maxdim=4)
+### save(iris.nmds, file="ecodist/data/iris.nmds.rda")
+data(iris.nmds)
+
+# examine fit by number of dimensions
+plot(iris.nmds)
+
 
 ## Beta diversidade 
 #matriz de comunidade
@@ -77,3 +93,5 @@ beta_sim<-beta_nat[["beta.sim"]] ###objeto apenas com a matriz de simpson
 beta_sim # turnover
 class(beta_sim)
 length(beta_sim)
+
+
