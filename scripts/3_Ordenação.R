@@ -6,7 +6,7 @@ library(here);library(stats)
 ## carregar tabela
 #primeiro abrir diretório da pasta de dados
 
-ord.var_co <- read.table("dados_PCA.txt", h=T)
+ord.var_co <- read.table("PCA_coocorrem.txt", h=T)
 head(ord.var_co)
 dados.pca_co<-ord.var_co[,(-1)]
 class(dados.pca_co$SM)
@@ -22,6 +22,7 @@ pca_co
 biplot(pca_co)
 
 # Figura bonitinha
+library(ggfortify)
 
 ordpca_co<-autoplot(pca_co, 
                     label=FALSE, 
@@ -33,7 +34,7 @@ ordpca_co<-autoplot(pca_co,
                     loadings=TRUE, #inclui as setas com as variaveis
                     loadings.colour="black" #edita a cor das setas
 ) +
-  theme_bw() +my.theme +
+  theme_bw() +
   scale_color_manual(values = c("#666666", "#996600")) +
   geom_vline(xintercept=0, color="black", linetype="dotted") +
   geom_hline(yintercept=0, color="black", linetype="dotted") +
