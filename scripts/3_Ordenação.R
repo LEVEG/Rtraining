@@ -4,19 +4,14 @@
 library(here);library(stats)
 
 ## carregar tabela
+#primeiro abrir diretório da pasta de dados
 
-ord.var_co <- read.csv2(here::here("pasta_de_dados", "PCA.csv"))
+ord.var_co <- read.table("dados_PCA.txt", h=T)
 head(ord.var_co)
-dados.pca_co<-ord.var_co[,c(-1,-2)]
-class(dados.pca_co$SLA)
+dados.pca_co<-ord.var_co[,(-1)]
+class(dados.pca_co$SM)
 
-f2n <- function(f) {  if(!is.character(f)) stop("the input must be a character") 
-  as.numeric(levels(f))[as.integer(f)]} #funcao para converter Factor to Numeric (f2n)
 
-dados.pca_co$SLA<-f2n(dados.pca_co$SLA)
-dados.pca_co$LA<-f2n(dados.pca_co$LA)
-dados.pca_co$LDMC<-f2n(dados.pca_co$LDMC)
-dados.pca_co$SN<-f2n(dados.pca_co$SN)
 
 ## calcular PCA
 
