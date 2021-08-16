@@ -1,17 +1,18 @@
 # carregar pacotes ------
-library(here);library(stats);library(dplyr);library(tibble);library(vegan)
+library(here);library(stats);library(dplyr);library(tibble);library(vegan);library(ape); library(ecodist);library(ggplot2)
+data(iris)
 
 ## PCA ----------
 
 ## carregar tabela
 #primeiro abrir diretório da pasta de dados
-ord.var_co <- read.table("PCA_coocorrem.txt", h=T)
-head(ord.var_co)
-dados.pca_co<-ord.var_co[,(-1)];dados.pca_co
-class(dados.pca_co$SM)
+# ord.var_co <- read.table("PCA_coocorrem.txt", h=T)
+# head(ord.var_co)
+# dados.pca_co<-ord.var_co[,(-1)];dados.pca_co
+# class(dados.pca_co$SM)
 
 ## calcular PCA
-pca_co <- prcomp(dados.pca_co, center = T, scale. = T)
+pca_co <- prcomp(iris[,1:4], center = T, scale. = T)
 #center e scale: fazm com que os dados sejam ajustados para a mesma escala, removendo altas variações
 #scores da pca: como cada variavel esta associada aos eixos
 pca_co
@@ -25,8 +26,8 @@ biplot(pca_co)
 library(ggfortify)
 ordpca_co<-autoplot(pca_co, 
                     label=FALSE, 
-                    data=ord.var_co, #dados originais inseridos na pca
-                    colour="trat", #coluna que indica os grupos de cores
+                    data=iris, #dados originais inseridos na pca
+                    colour="Species", #coluna que indica os grupos de cores
                     label.size=4, #tamanho dos rotulos
                     shape=19, #omite o simbolo
                     size=3,
@@ -34,14 +35,13 @@ ordpca_co<-autoplot(pca_co,
                     loadings.colour="black" #edita a cor das setas
 ) +
   theme_bw() +
-  scale_color_manual(values = c("#666666", "#996600")) +
+  scale_color_manual(values = c("#666666", "#996600","#000000")) +
   geom_vline(xintercept=0, color="black", linetype="dotted") +
   geom_hline(yintercept=0, color="black", linetype="dotted") +
-  annotate("text", x=-0.15, y=-0.3, label= "LA") +
-  annotate("text", x=0.4, y=0.15, label= "LDMC") +
-  annotate("text", x=-0.10, y=0.38, label= "SM") +
-  annotate("text", x=-0.25, y=0.30, label= "SN") +
-  annotate("text", x=-0.33, y=-0.03, label= "SLA") +
+  annotate("text", x=0.52, y=-0.37, label= "Sepal.Lenght") +
+  annotate("text", x=-0.26, y=-0.92, label= "Sepal.Width") +
+  annotate("text", x=0.58, y=-0.02, label= "Petal.Lenght") +
+  annotate("text", x=-0.56, y=-0.06, label= "Petal.Width") +
   theme(legend.background=element_rect(color="grey"),
         legend.position=c(0.12,0.90),
         legend.text=element_text(size=rel(1.1)),
@@ -49,8 +49,20 @@ ordpca_co<-autoplot(pca_co,
   labs(color="Strata")
 ordpca_co
 
+## PCoA ------------
+d <- vegdist(iris[,1:4])
+pcoa <- pcoa(d)
+pcoa$vectors
+biplot(pcoa)
+iris2<-as.data.frame(iris);iris2$Species <-as.factor(iris2$Species)
+df.pcoa<-as.data.frame(cbind(pcoa$vectors,iris2[,4:5]))
+ggplot(df.pcoa, aes(x = Axis.1, y = Axis.2, color=Species)) + geom_point()+
+  geom_vline(xintercept=0, color="black", linetype="dotted") +
+  geom_hline(yintercept=0, color="black", linetype="dotted")+
+  theme_light()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank())
+
+
 ## NMDS -------
-library(ecodist)
 data(iris)
 iris.d <- dist(iris[,1:4])
 
