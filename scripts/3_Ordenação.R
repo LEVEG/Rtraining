@@ -4,12 +4,6 @@ data(iris)
 
 ## PCA ----------
 
-## carregar tabela
-#primeiro abrir diretório da pasta de dados
-# ord.var_co <- read.table("PCA_coocorrem.txt", h=T)
-# head(ord.var_co)
-# dados.pca_co<-ord.var_co[,(-1)];dados.pca_co
-# class(dados.pca_co$SM)
 
 ## calcular PCA
 pca_co <- prcomp(iris[,1:4], center = T, scale. = T)
@@ -21,6 +15,13 @@ pca_co$x
 
 # Figura
 biplot(pca_co)
+
+## carregar tabela
+#primeiro abrir diretório da pasta de dados
+ord.var_co <- read.table("PCA_coocorrem.txt", h=T)
+head(ord.var_co)
+dados.pca_co<-ord.var_co[,(-1)];dados.pca_co
+#class(dados.pca_co$SM)
 
 # Figura bonitinha
 library(ggfortify)
