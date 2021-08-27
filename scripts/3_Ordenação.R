@@ -6,12 +6,14 @@ data(iris)
 
 
 ## calcular PCA
-pca_co <- prcomp(iris[,1:4], center = T, scale. = T)
+pca_co <- prcomp(iris[,1:4], center = T, scale. = T) # importante para comunidades com medidas distintas, mesma amplitude
 #center e scale: fazm com que os dados sejam ajustados para a mesma escala, removendo altas variações
 #scores da pca: como cada variavel esta associada aos eixos
 pca_co
 #como cada UA esta associada aos eixos
-pca_co$x
+pca_co$x # os eixos da PCA, cada um dos indíviduos com um score
+
+summary(pca_co)
 
 # Figura
 biplot(pca_co)
@@ -86,10 +88,16 @@ ordpca_co
 
 
 ## PCoA ------------
-d <- vegdist(iris[,1:4])
+d <- vegdist(iris[,1:4]) # aqui euclidiana, porque estão na mesma unidade de medida.
 pcoa <- pcoa(d)
 pcoa$vectors
+pcoa$values$Cum_corr_eig
+
+summary(pcoa)
+
 biplot(pcoa)
+
+
 iris2<-as.data.frame(iris);iris2$Species <-as.factor(iris2$Species)
 df.pcoa<-as.data.frame(cbind(pcoa$vectors,iris2[,4:5]))
 ggplot(df.pcoa, aes(x = Axis.1, y = Axis.2, color=Species)) + geom_point()+
@@ -105,7 +113,8 @@ iris.d <- dist(iris[,1:4])
 ### nmds() is timeconsuming, so this was generated
 ### in advance and saved.
 ### set.seed(1234)
-iris.nmds <- nmds(iris.d, nits=20, mindim=1, maxdim=4)
+library(ecodist) 
+iris.nmds <- nmds(iris.d, nits=20, mindim=1, maxdim=4) # aqui com pacote ecodist
 ### save(iris.nmds, file="ecodist/data/iris.nmds.rda")
 data(iris.nmds)
 
@@ -114,7 +123,9 @@ plot(iris.nmds)
 
 #outra função muito usada
 library(vegan)
-nmds2 <- metaMDS(iris[,1:4])
+nmds2 <- metaMDS(iris[,1:4])# aqui vegan, mais usada
+nmds2$species
+
 plot(nmds2, type="t")
 iris2<-as.data.frame(iris);iris2$Species <-as.factor(iris2$Species)
 df<-as.data.frame(cbind(nmds2$points,iris2[,4:5]))
@@ -122,6 +133,8 @@ ggplot(df, aes(x = MDS1, y = MDS2, color=Species,size=I(2))) + geom_point()+
   geom_vline(xintercept=0, color="black", linetype="dotted") +
   geom_hline(yintercept=0, color="black", linetype="dotted")+
   theme_light()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank())
+summary(nmds2)
+
 
 ## Beta diversidade ------------
 #matriz de comunidade
