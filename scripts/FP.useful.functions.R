@@ -13,6 +13,8 @@
 # value = ba gera uma matriz de comunidades por area basal
 # value = dens gera uma matriz de comunidades com densidade
 
+# SE FOR USAR o SÍTIO como comunidade: mudar para column_to_rownames(var="Plot.Code")
+
 community.matrix <- function (data2, value){ 
   if(value == "ba"){ # value = ba gera uma matriz por area basal
     
