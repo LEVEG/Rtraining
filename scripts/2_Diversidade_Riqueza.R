@@ -4,6 +4,7 @@
 library(reshape);library(reshape2)
 library(here);library(dplyr);library(tibble);library(vegan)
 
+
 ## carregar dados de comunidade
 
 data <- read.csv2(here::here("pasta_de_dados", "nome_da_tabela.csv"))
