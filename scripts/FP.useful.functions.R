@@ -1,7 +1,18 @@
+
 # ForestPlots useful functions ----
+
 
 # Version 0.0.1 
 # Kauane Bordin
+
+# PACOTES ---
+library(dplyr)
+library(reshape)
+library(tidyverse)
+
+# AREA BASAL -----
+basal.area <- function(x) { (pi*(x/2)^2)/10000} # calculate basal area in m^2 ha ### BA = (sum(n (PI*(Di/2)^2 )))/Ha |||| #(pi*(1/2)^2)/10000
+
 
 # MATRIZ DE COMUNIDADES -------
 # Funcao para gerar matriz de comunidade, ou termos de area basal ou
@@ -14,6 +25,7 @@
 # value = dens gera uma matriz de comunidades com densidade
 
 # SE FOR USAR o SÍTIO como comunidade: mudar para column_to_rownames(var="Plot.Code")
+
 
 community.matrix <- function (data2, value){ 
   if(value == "ba"){ # value = ba gera uma matriz por area basal
@@ -45,3 +57,18 @@ stem2abund <- function (x){
                         stem.letter != "f" & stem.letter != "g") 
 }
 
+
+# EXEMPLOS ------------
+
+matriz.exemplo.FP <- read.csv2(here::here("pasta_de_dados", "matriz.exemplo.forestplots.csv"))
+names(matriz.exemplo.FP) #nomes das colunas
+
+dados.analise <- read.csv2(here::here("pasta_de_dados", "dados_originais.csv"))
+dados.analise$ba <- basal.area(dados.analise$D1)
+names(dados.analise)
+
+comunidade.BA <- community.matrix(data2 = dados.analise, value = "ba")
+comunidade.density <- community.matrix(data2 = dados.analise, value = "dens")
+
+dados.stem.density <- stem2abund(dados.analise)
+dados.stem.density
