@@ -83,3 +83,4 @@ comunidade.stem.density <- community.matrix(data2 = dados.analise, value = "dens
 #matriz de comunidades usando densidade de individuos
 dados.individual.density <- stem2abund(dados.analise)
 comunidade.individual.density <- community.matrix(data2 = dados.individual.density, value = "dens")
+
