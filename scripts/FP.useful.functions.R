@@ -54,7 +54,9 @@ stem2abund <- function (x){
   x[is.na(x)] = "singlestem"
   x2 <- dplyr::filter(x,stem.letter != "b" & stem.letter != "c" & 
                         stem.letter != "d" & stem.letter != "e" & stem.letter != "E" & 
-                        stem.letter != "f" & stem.letter != "g") 
+                        stem.letter != "f" & stem.letter != "g" & stem.letter != "h" &
+                        stem.letter != "i" & stem.letter != "j" & stem.letter != "k" &
+                        stem.letter != "l") 
 }
 
 
@@ -63,12 +65,21 @@ stem2abund <- function (x){
 matriz.exemplo.FP <- read.csv2(here::here("pasta_de_dados", "matriz.exemplo.forestplots.csv"))
 names(matriz.exemplo.FP) #nomes das colunas
 
+ #siga o passo a passo nessa ordem :)
+
+# Primeiro carregue os dados
 dados.analise <- read.csv2(here::here("pasta_de_dados", "dados_originais.csv"))
+
+# Calcule a area basal para cada um dos stems
 dados.analise$ba <- basal.area(dados.analise$D1)
 names(dados.analise)
 
+#matriz de comunidade usando area basal
 comunidade.BA <- community.matrix(data2 = dados.analise, value = "ba")
-comunidade.density <- community.matrix(data2 = dados.analise, value = "dens")
 
-dados.stem.density <- stem2abund(dados.analise)
-dados.stem.density
+#matriz de comunidades usando densidade de stems
+comunidade.stem.density <- community.matrix(data2 = dados.analise, value = "dens")
+
+#matriz de comunidades usando densidade de individuos
+dados.individual.density <- stem2abund(dados.analise)
+comunidade.individual.density <- community.matrix(data2 = dados.individual.density, value = "dens")
