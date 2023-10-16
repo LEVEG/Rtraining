@@ -11,7 +11,7 @@ library(reshape)
 library(tidyverse)
 
 # AREA BASAL -----
-basal.area <- function(x) { (pi*(x/2)^2)/10000} # calculate basal area in m^2 ha ### BA = (sum(n (PI*(Di/2)^2 )))/Ha |||| #(pi*(1/2)^2)/10000
+basal.area <- function(x) { (pi*(x/2)^2)/10000} # calculate basal area in cm^2 ha ### BA = (sum(n (PI*(Di/2)^2 )))/Ha |||| #(pi*(1/2)^2)/10000
 
 
 # MATRIZ DE COMUNIDADES -------
